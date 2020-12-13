@@ -20,17 +20,19 @@ query SpaceCenters{
     }
     }`;
 function Home() {
+    //set initial values
     const [viewport, setViewport]=useState({
         width: '80vw',
         height: '80vh',
         latitude: 37.7577,
         longitude: -122.4376,
-        zoom: 8
+        zoom: 1
     });
     const [selectedMarker, setSelectedMarker]=useState(null);
     const { loading, error, data }=useQuery(SPACE_CENTERS_QUERY);
-
+    //handle loading
     if (loading) return <p>Loading...</p>;
+    //handle error
     if (error) return <p>Error</p>;
     return (
         <Wrapper>

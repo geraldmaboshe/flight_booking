@@ -1,14 +1,12 @@
-// Update with your config settings.
-require('dotenv').config();
+// Update with your config settings. refer to env.sample
 
 module.exports={
-
   development: {
     client: 'pg',
     connection: {
-      database: process.env.POSTGRES_DB,
-      user: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
+      user: process.env.POSTGRES_USER,
+      database: process.env.POSTGRES_DB
     },
     migrations: {
       directory: './db/migrations',

@@ -10,7 +10,7 @@ import SpaceCenter from './components/SpaceCenter';
 import Header from './components/Header';
 
 const client=new ApolloClient({
-  uri: 'http://localhost:3000/graphql',
+  uri: 'http://localhost:3000/graphql', //graphql entry point
   cache: new InMemoryCache()
 });
 
@@ -25,7 +25,6 @@ function App() {
           <Route exact path='/' component={Home} />
           <Route exact path='/:id' component={SpaceCenter} />
         </Switch>
-
       </Router>
     </ApolloProvider>
 

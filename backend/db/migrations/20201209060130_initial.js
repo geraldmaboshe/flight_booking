@@ -15,23 +15,24 @@ exports.up=async (knex) => {
         table.string('description');
         table.float('latitude').notNullable();
         table.float('longitude').notNullable();
-        table.integer('planet_id').unsigned().references('id').inTable(tableNames.planets);
+        table.integer('planet_id').unsigned().references('id').inTable(tableNames.planets).onDelete('CASCADE');
     })
 
     await knex.schema.createTable(tableNames.flights, (table) => {
         table.increments().notNullable();
-        table.string('code').notNullable();
-        table.string('departure_at').notNullable();
-        table.string('seat_count').notNullable();
+        table.string('code')
+        table.datetime('departure_at');
+        table.integer('seat_count')
+        table.integer('space_center_id').unsigned().references('id').inTable(tableNames.space_centers).onDelete('CASCADE')
     })
 };
 
 exports.down=async (knex) => {
     await Promise.all(
         [
-            tableNames.planets,
             tableNames.flights,
-            tableNames.space_centers
+            tableNames.space_centers,
+            tableNames.planets
         ].map((tableName) => knex.schema.dropTableIfExists(tableName))
     );
 };

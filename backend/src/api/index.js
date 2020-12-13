@@ -1,34 +1,16 @@
 const Koa=require("koa");
-const { ApolloServer, gql }=require("apollo-server-koa");
+const { ApolloServer }=require("apollo-server-koa");
 const schema=require('./presentation/schema');
-const parseAuthorizationHeader=require('./utils');
-const SpaceCenter=require("./db/queryBuilders/spaceCenter");
-const bearerToken=require('koa-bearer-token')
-const bodyParser=require('koa-bodyparser');
+const { protect }=require('./middleware/authenticate')
+const app=new Koa();
+require('dotenv').config();
 
-
-
-// const formatResponse=(response, args) => {
-//   console.log("queryString : ", args.queryString);
-//   console.log("variables : ", args.variables);
-//   return response;
-// };
-
+//register auth middleware
+app.use(protect)
+//setup apollo server
 const server=new ApolloServer({
   schema,
-  // context: ({ req }) => {
-  //   return {
-  //     authToken: parseAuthorizationHeader({ req }),
-  //     dataLoaders: {
-  //       spaceCenter: SpaceCenter.getLoaders(),
-  //     }
-  //   }
-
-
-  // },
 });
-
-const app=new Koa();
 
 server.applyMiddleware({ app, path: "/graphql" });
 
