@@ -13,15 +13,30 @@ import LeftView from './LeftView';
 import RightView from './RightView';
 import SpaceCenterList from './SpaceCenterList';
 import SpaceCenterListItem from './SpaceCenterListItem';
-const SPACE_CENTERS_QUERY = gql`
-  query SpaceCenters {
-    spaceCenters {
-      id
-      uid
-      name
-      description
-      latitude
-      longitude
+const FLIGHTS_QUERY = gql`
+  query Flights {
+    flights {
+      nodes {
+        id
+        code
+        launchSite {
+          id
+          name
+          description
+          latitude
+          longitude
+        }
+        landingSite {
+          id
+          name
+          description
+          latitude
+          longitude
+        }
+        departureAt
+        seatCount
+        availableSeats
+      }
     }
   }
 `;
@@ -30,22 +45,26 @@ function Home() {
   const [viewport, setViewport] = useState({
     width: '80vw',
     height: '80vh',
-    latitude: 37.7577,
-    longitude: -122.4376,
-    zoom: 1
+    latitude: 41.579606918652054,
+    longitude: 4.244298260567439,
+    zoom: 3.5,
+    bearing: 0,
+    pitch: 0,
+    transitionDuration: 1000
   });
   const [selectedMarker, setSelectedMarker] = useState(null);
-  const { loading, error, data } = useQuery(SPACE_CENTERS_QUERY);
+  const { loading, error, data } = useQuery(FLIGHTS_QUERY);
   //handle loading
   if (loading) return <p>Loading...</p>;
   //handle error
-  if (error) return <p>Error</p>;
+  if (error) return <p>{error.message}</p>;
   return (
     <Wrapper>
       <LeftView>
         <ReactMapGL
           {...viewport}
           mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN_PUBLIC}
+          mapStyle="mapbox://styles/mapbox/dark-v8"
           onViewportChange={viewport => {
             setViewport(viewport);
           }}
@@ -53,19 +72,19 @@ function Home() {
             setViewport(viewport);
           }}
         >
-          {data.spaceCenters.map(spaceCenter => (
+          {data.flights.nodes.map(flight => (
             <Marker
-              key={spaceCenter.id}
-              latitude={spaceCenter.latitude}
-              longitude={spaceCenter.longitude}
+              key={flight.id}
+              latitude={flight.launchSite.latitude}
+              longitude={flight.launchSite.longitude}
             >
               <button
                 onClick={e => {
                   e.preventDefault();
-                  setSelectedMarker(spaceCenter);
+                  setSelectedMarker(flight);
                 }}
               >
-                <img src={MarkerIcon} alt="Marker Icon" width="20px" />
+                <img src={MarkerIcon} alt="Marker Icon" width="200px" />
               </button>
             </Marker>
           ))}
@@ -86,13 +105,13 @@ function Home() {
         </ReactMapGL>
       </LeftView>
       <RightView>
-        <SpaceCenterList>
+        {/* <SpaceCenterList>
           {data.spaceCenters.map(spaceCenter => (
             <SpaceCenterListItem>
               <SpaceCenters key={spaceCenter.key} spaceCenter={spaceCenter} />
             </SpaceCenterListItem>
           ))}
-        </SpaceCenterList>
+        </SpaceCenterList> */}
       </RightView>
     </Wrapper>
   );
