@@ -1,8 +1,9 @@
-const tableNames=require('../../src/constants/tableNames')
+const tableNames = require('../../src/constants/tableNames');
 
-exports.seed=function (knex) {
+exports.seed = function (knex) {
   // Deletes ALL existing entries
-  return knex(tableNames.planets).del()
+  return knex(tableNames.planets)
+    .del()
     .then(function () {
       // Inserts seed entries
       return knex(tableNames.planets).insert([
@@ -66,8 +67,6 @@ exports.seed=function (knex) {
           name: 'Europa',
           code: 'JUP_EUR'
         }
-      ]
-
-      );
+      ]);
     });
 };

@@ -1,6 +1,6 @@
+require('dotenv').config();
 // Update with your config settings. refer to env.sample
-
-module.exports={
+module.exports = {
   development: {
     client: 'pg',
     connection: {
@@ -9,11 +9,10 @@ module.exports={
       database: process.env.POSTGRES_DB
     },
     migrations: {
-      directory: './db/migrations',
+      directory: './db/migrations'
     },
     seeds: {
       directory: './db/seeds'
     }
-  },
-
+  }
 };
