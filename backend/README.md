@@ -6,7 +6,7 @@
 
 - Run `npm install` to install dependencies
 - create `.env` in the source folder with your values as shown in the .env.sample
-- Run `docker-compose up` to run postgres db and adminer. Adminer will be running at http://localhost:8080
+- Run `docker-compose up` to pull postgres db and adminer. Adminer will run at http://localhost:8080
 - Run `npm run migrate` to migrate the database
 - Run `npm run seed` to seed the database
 - Navigate to the src folder by running `cd src`
